@@ -329,14 +329,9 @@ function aDF:Update()
 		if apcurr > apprev then
 			local apdiff = apcurr - apprev
 			local apdiffreason = ""
-			if aDFArmorVals[apdiff] then
-				apdiff = " (Dropped " .. aDFArmorVals[armordiff] .. ")"
-				local apdiffmsg = UnitName(aDF_target).."'s attack power: "..apprev.." -> "..apcurr..apdiffreason
-			end
-			-- adfprint(msg)
-			if aDF_target == 'target' then
+			if aDFAttackpowerVals[apdiff] and aDF_target == 'target' then
 				-- targettarget does not trigger events when it changes. this means it's hard to tell apart units with the same name, so we don't allow notifications for it
-				SendChatMessage(apdiffmsg, gui_chan)
+				SendChatMessage(UnitName(aDF_target).." dropped "..aDFAttackpowerVals[apdiff].., gui_chan)
 			end
 		end
 		
