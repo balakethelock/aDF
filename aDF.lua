@@ -311,7 +311,7 @@ function aDF:Update()
 		
 		local armorcurr = UnitResistance(aDF_target,0)
 --		aDF.armor:SetText(UnitResistance(aDF_target,0).." ["..math.floor(((UnitResistance(aDF_target,0) / (467.5 * UnitLevel("player") + UnitResistance(aDF_target,0) - 22167.5)) * 100),1).."%]")
-		aDF.armor:SetText("Ar"..armorcurr.."Ap"..apcurr)
+		aDF.armor:SetText("Ar"..armorcurr.. "Ap"..apcurr)
 		-- adfprint(string.format('aDF_target %s targetname %s armorcurr %s armorprev %s', aDF_target, UnitName(aDF_target), armorcurr, aDF_armorprev))
 		if armorcurr > aDF_armorprev then
 			local armordiff = armorcurr - aDF_armorprev
@@ -325,9 +325,23 @@ function aDF:Update()
 				-- targettarget does not trigger events when it changes. this means it's hard to tell apart units with the same name, so we don't allow notifications for it
 				SendChatMessage(msg, gui_chan)
 			end
-
 		end
+		if apcurr > apprev then
+			local apdiff = apcurr - apprev
+			local apdiffreason = ""
+			if aDFArmorVals[apdiff] then
+				apdiff = " (Dropped " .. aDFArmorVals[armordiff] .. ")"
+				local apdiffmsg = UnitName(aDF_target).."'s attack power: "..apprev.." -> "..apcurr..apdiffreason
+			end
+			-- adfprint(msg)
+			if aDF_target == 'target' then
+				-- targettarget does not trigger events when it changes. this means it's hard to tell apart units with the same name, so we don't allow notifications for it
+				SendChatMessage(apdiffmsg, gui_chan)
+			end
+		end
+		
 		aDF_armorprev = armorcurr
+		apprev = apcurr
 
 		if gui_Options["Resistances"] == 1 then
 			aDF.res:SetText("|cffFF0000FR "..UnitResistance(aDF_target,2).." |cff00FF00NR "..UnitResistance(aDF_target,3).." |cff4AE8F5FrR "..UnitResistance(aDF_target,4).." |cff800080SR "..UnitResistance(aDF_target,5))
