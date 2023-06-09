@@ -319,7 +319,7 @@ function aDF:Update()
 		
 		local armorcurr = UnitResistance(aDF_target,0)
 --		aDF.armor:SetText(UnitResistance(aDF_target,0).." ["..math.floor(((UnitResistance(aDF_target,0) / (467.5 * UnitLevel("player") + UnitResistance(aDF_target,0) - 22167.5)) * 100),1).."%]")
-		aDF.armor:SetText("Ar"..armorcurr.." Ap|cffF2E699"..apcurr) FFFF00 -- Armor and AP in same text window
+		aDF.armor:SetText("Ar"..armorcurr.." Ap|cffF2E699"..apcurr) -- Armor and AP in same text window
 		-- adfprint(string.format('aDF_target %s targetname %s armorcurr %s armorprev %s', aDF_target, UnitName(aDF_target), armorcurr, aDF_armorprev))
 		if armorcurr > aDF_armorprev then
 			local armordiff = armorcurr - aDF_armorprev
