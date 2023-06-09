@@ -107,6 +107,20 @@ aDFArmorVals = {
 	[200]  = "Annihilator x1 ?",
 	[50]   = "Torch of Holy Flame",
 }
+aDFAttackpowerVals = {
+	[145]   = "Demo Shout", -- Tthe game reduces ap by an amount slightly different from what it should, I don't know why.
+	[146]   = "Demo Shout", 
+	[147]   = "Demo Shout",
+	[203]  = "Improved Demo Shout",
+	[204]  = "Improved Demo Shout",
+	[205]  = "Improved Demo Shout",
+	[137]  = "Demo Roar",
+	[138]  = "Demo Roar",
+	[139]  = "Demo Roar",
+	[192]  = "Improved Demo Roar",
+	[193]  = "Improved Demo Roar",
+	[194]  = "Improved Demo Roar",
+}
 
 function aDF_Default()
 	if guiOptions == nil then
@@ -299,9 +313,13 @@ function aDF:Update()
 			-- adfprint('target changed too soon, delaying update')
 			return
 		end
+		
+		base, buff, debuff = UnitAttackPower(aDF_target);
+		apcurr = base + buff + debuff;
+		
 		local armorcurr = UnitResistance(aDF_target,0)
 --		aDF.armor:SetText(UnitResistance(aDF_target,0).." ["..math.floor(((UnitResistance(aDF_target,0) / (467.5 * UnitLevel("player") + UnitResistance(aDF_target,0) - 22167.5)) * 100),1).."%]")
-		aDF.armor:SetText(armorcurr)
+		aDF.armor:SetText("Ar"..armorcurr.." Ap|cffF2E699"..apcurr) -- Armor and AP in same text window
 		-- adfprint(string.format('aDF_target %s targetname %s armorcurr %s armorprev %s', aDF_target, UnitName(aDF_target), armorcurr, aDF_armorprev))
 		if armorcurr > aDF_armorprev then
 			local armordiff = armorcurr - aDF_armorprev
@@ -315,9 +333,17 @@ function aDF:Update()
 				-- targettarget does not trigger events when it changes. this means it's hard to tell apart units with the same name, so we don't allow notifications for it
 				SendChatMessage(msg, gui_chan)
 			end
-
 		end
+		if apcurr > apprev then
+			local apdiff = apcurr - apprev
+			local apdiffreason = ""
+			if aDFAttackpowerVals[apdiff] and aDF_target == 'target' then
+				SendChatMessage(UnitName(aDF_target).." dropped "..aDFAttackpowerVals[apdiff], gui_chan) -- only announces attack power changes if it's from a max rank demo shout/roar, ignores other effects like Screech and that engineering trinket.
+			end
+		end
+		
 		aDF_armorprev = armorcurr
+		apprev = apcurr
 
 		if gui_Options["Resistances"] == 1 then
 			aDF.res:SetText("|cffFF0000FR "..UnitResistance(aDF_target,2).." |cff00FF00NR "..UnitResistance(aDF_target,3).." |cff4AE8F5FrR "..UnitResistance(aDF_target,4).." |cff800080SR "..UnitResistance(aDF_target,5))
@@ -559,6 +585,7 @@ function aDF:OnEvent()
 		aDF_Default()
 		aDF_target = nil
 		aDF_armorprev = 30000
+		apprev = 30000
 		if gui_chan == nil then gui_chan = Say end
 		aDF:Init() -- loads frame, see the function
 		aDF.Options:Gui() -- loads options frame
@@ -581,6 +608,7 @@ function aDF:OnEvent()
 			aDF_target = "target"
 		end
 		aDF_armorprev = 30000
+		apprev = 30000
 		-- adfprint('PLAYER_TARGET_CHANGED ' .. tostring(aDF_target))
 		aDF:Update()
 	end
