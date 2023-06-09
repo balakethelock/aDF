@@ -108,10 +108,18 @@ aDFArmorVals = {
 	[50]   = "Torch of Holy Flame",
 }
 aDFAttackpowerVals = {
-	[146]   = "Demo Shout",
+	[145]   = "Demo Shout", -- Tthe game reduces ap by an amount slightly different from what it should, I don't know why.
+	[146]   = "Demo Shout", 
+	[147]   = "Demo Shout",
+	[203]  = "Improved Demo Shout",
 	[204]  = "Improved Demo Shout",
+	[205]  = "Improved Demo Shout",
+	[137]  = "Demo Roar",
 	[138]  = "Demo Roar",
+	[139]  = "Demo Roar",
+	[192]  = "Improved Demo Roar",
 	[193]  = "Improved Demo Roar",
+	[194]  = "Improved Demo Roar",
 }
 
 function aDF_Default()
@@ -311,7 +319,7 @@ function aDF:Update()
 		
 		local armorcurr = UnitResistance(aDF_target,0)
 --		aDF.armor:SetText(UnitResistance(aDF_target,0).." ["..math.floor(((UnitResistance(aDF_target,0) / (467.5 * UnitLevel("player") + UnitResistance(aDF_target,0) - 22167.5)) * 100),1).."%]")
-		aDF.armor:SetText("Ar"..armorcurr.." Ap"..apcurr)
+		aDF.armor:SetText("Ar"..armorcurr.." Ap|cffF2E699"..apcurr) FFFF00 -- Armor and AP in same text window
 		-- adfprint(string.format('aDF_target %s targetname %s armorcurr %s armorprev %s', aDF_target, UnitName(aDF_target), armorcurr, aDF_armorprev))
 		if armorcurr > aDF_armorprev then
 			local armordiff = armorcurr - aDF_armorprev
@@ -330,8 +338,7 @@ function aDF:Update()
 			local apdiff = apcurr - apprev
 			local apdiffreason = ""
 			if aDFAttackpowerVals[apdiff] and aDF_target == 'target' then
-				-- targettarget does not trigger events when it changes. this means it's hard to tell apart units with the same name, so we don't allow notifications for it
-				SendChatMessage(UnitName(aDF_target).." dropped "..aDFAttackpowerVals[apdiff].., gui_chan)
+				SendChatMessage(UnitName(aDF_target).." dropped "..aDFAttackpowerVals[apdiff].., gui_chan) -- only announces attack power changes if it's from a max rank demo shout/roar, ignores other effects like Screech and that engineering trinket.
 			end
 		end
 		
