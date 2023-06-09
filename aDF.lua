@@ -583,6 +583,7 @@ function aDF:OnEvent()
 		aDF_Default()
 		aDF_target = nil
 		aDF_armorprev = 30000
+		apprev = 30000
 		if gui_chan == nil then gui_chan = Say end
 		aDF:Init() -- loads frame, see the function
 		aDF.Options:Gui() -- loads options frame
@@ -605,6 +606,7 @@ function aDF:OnEvent()
 			aDF_target = "target"
 		end
 		aDF_armorprev = 30000
+		apprev = 30000
 		-- adfprint('PLAYER_TARGET_CHANGED ' .. tostring(aDF_target))
 		aDF:Update()
 	end
