@@ -338,7 +338,7 @@ function aDF:Update()
 			local apdiff = apcurr - apprev
 			local apdiffreason = ""
 			if aDFAttackpowerVals[apdiff] and aDF_target == 'target' then
-				SendChatMessage(UnitName(aDF_target).." dropped "..aDFAttackpowerVals[apdiff].., gui_chan) -- only announces attack power changes if it's from a max rank demo shout/roar, ignores other effects like Screech and that engineering trinket.
+				SendChatMessage(UnitName(aDF_target).." dropped "..aDFAttackpowerVals[apdiff], gui_chan) -- only announces attack power changes if it's from a max rank demo shout/roar, ignores other effects like Screech and that engineering trinket.
 			end
 		end
 		
