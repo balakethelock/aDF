@@ -107,6 +107,12 @@ aDFArmorVals = {
 	[200]  = "Annihilator x1 ?",
 	[50]   = "Torch of Holy Flame",
 }
+aDFAttackpowerVals = {
+	[146]   = "Demo Shout",
+	[204]  = "Improved Demo Shout",
+	[138]  = "Demo Roar",
+	[193]  = "Improved Demo Roar",
+}
 
 function aDF_Default()
 	if guiOptions == nil then
@@ -299,9 +305,13 @@ function aDF:Update()
 			-- adfprint('target changed too soon, delaying update')
 			return
 		end
+		
+		base, buff, debuff = UnitAttackPower(aDF_target);
+		apcurr = base + buff + debuff;
+		
 		local armorcurr = UnitResistance(aDF_target,0)
 --		aDF.armor:SetText(UnitResistance(aDF_target,0).." ["..math.floor(((UnitResistance(aDF_target,0) / (467.5 * UnitLevel("player") + UnitResistance(aDF_target,0) - 22167.5)) * 100),1).."%]")
-		aDF.armor:SetText(armorcurr)
+		aDF.armor:SetText("Ar"..armorcurr.."Ap"..apcurr)
 		-- adfprint(string.format('aDF_target %s targetname %s armorcurr %s armorprev %s', aDF_target, UnitName(aDF_target), armorcurr, aDF_armorprev))
 		if armorcurr > aDF_armorprev then
 			local armordiff = armorcurr - aDF_armorprev
